@@ -72,10 +72,13 @@ class CSVHelper
 			  ["part-no"]=>
 			  string(2) "id"
 			}
+	@param $useOnlyMappedColumns - bool:
+			if set to true column not in $arrayMap will not be in the output array 
+			default-false
 	@return $arrayData[][] - array
 	****************************/
 
-	public function csvToArray($csvFile, $useColumnNames = true, $arrayMap = array())
+	public function csvToArray($csvFile, $useColumnNames = true, $arrayMap = array(), $useOnlyMappedColumns = false)
 	{
 		$arrayData = array();
 		$colNames = array();
@@ -107,18 +110,25 @@ class CSVHelper
 				$size = count($arrayData[$k]);
 				for($i = 0; $i < $size ; ++$i)
 				{
+					$inMap = false;
 					if($useColumnNames == true)
 						$newKey = $colNames[$i];
 					else
 						$newKey = $i;
 					
 					if(count($arrayMap) && in_array($newKey,array_keys($arrayMap)))
-							$newKey = $arrayMap[$newKey];
+					{
+						$inMap = true;
+						$newKey = $arrayMap[$newKey];
+					}
 		
 					$arrayData[$k][$newKey] = $arrayData[$k][$i];
 					
-					if($useColumnNames == true)
+					if($useColumnNames == true && $newKey != $i)
 						unset($arrayData[$k][$i]);
+						
+					if($useOnlyMappedColumns && !$inMap)
+						unset($arrayData[$k][$newKey]);
 				}
 			}
 			
