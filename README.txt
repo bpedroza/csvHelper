@@ -63,7 +63,7 @@ Paramaters are as follows:
 				
 				
 Need an insert query from a csv file? Try something like this.
-$MyCSVHelper->createQueryString($MyCSVHelper->csvToArray($csvLocation,true,$arrayMap, true),'aTable');
+$MyCSVHelper->createInsertQueryString($MyCSVHelper->csvToArray($csvLocation,true,$arrayMap, true),'aTable');
 the function accepts 2 argumants and creates a mysql insert query string.
 
 public function createQueryString($array, $table)
@@ -79,8 +79,20 @@ $table is the table data is to be inserted into.
 	
 	@return $queryString - String- a query string created from the array
 
+Update query? how about this:
+Need an insert query from a csv file? Try something like this.
+$MyCSVHelper->createQueryString($MyCSVHelper->csvToArray($csvLocation,true,$arrayMap, true),'aTable', 'modelNumber');
 
-
+this function takes an array of associative arrays and creates a mass update query.
+	the keys of each associative array must be database table names and the values are values to be inserted.
+	all paramaters are required.
+	
+	@param $array - array - array of associative arrays containing data to be inserted.
+	@param $table - String - name of the database table to update. 
+	@param $whereCoulmn - String - Name of the column the 'where' part of the query should use ie 'id'
+		the update query will update where 'id' = $array['id']
+	
+	@return $queryString - String- a query string created from the array
 
 A Note:
 Using this at work i've noticed that the server i was working with times out after processing about 40,000 lines using the csvToArray function. If you have a very large csv file you might want to consider spliting it into multiple files before using this tool. There are some good csv splitting desktop applications availible for use. I might try to create a splitting function for this utility, until then use an open source desktop application for csv files containing more than 40,000 lines.

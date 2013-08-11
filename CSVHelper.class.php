@@ -141,18 +141,45 @@ class CSVHelper
 	
 	@return $queryString - String- a query string created from the array
 	********************************************/
-	public function createQueryString($array, $table)
+	public function createInsertQueryString($array, $table)
 	{
 		$queryString = 	"INSERT INTO `".$table."` (`".implode("`, `",array_keys($array[0]))."`) VALUES";
-		foreach($array as $column)
+		foreach($array as $row)
 		{
-			$queryString .= "('".implode("', '",$column)."'),";	
+			$queryString .= "('".implode("', '",$row)."'),";	
 		}
 		$queryString = substr($queryString,0,strlen($queryString)-1);
 		
 		return $queryString;
 	}
 	
+	/*******************************************
+	this function takes an array of associative arrays and creates a mass update query.
+	the keys of each associative array must be database table names and the values are values to be inserted.
+	
+	@param $array - array - array of associative arrays containing data to be inserted.
+	@param $table - String - name of the database table to insert data into. 
+	@param $whereCoulmn - String - Name of the column the 'where' part of the query should use ie 'id'
+		the update query will update where 'id' = $array['id']
+	
+	@return $queryString - String- a query string created from the array
+	********************************************/
+	public function createUpdateQueryString($array, $table, $whereColumn)
+	{
+		$queryString = 	'';
+		foreach($array as $row)
+		{
+			$updateString = '';
+			$updateString .= "UPDATE `".$table."` SET ";
+			foreach($row as $key => $value)
+				$updateString .= "`".$key."`='".$value."',";
+				
+			$updateString = substr($updateString,0,strlen($updateString) - 1);
+			$queryString .= $updateString." WHERE `".$whereColumn."`='".$row[$whereColumn]."';";
+		}
+		
+		return $queryString;
+	}
 
 }
 ?>
