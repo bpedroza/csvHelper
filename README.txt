@@ -61,4 +61,25 @@ Paramaters are as follows:
 			2) if a location is set, after attempting to create the file a check is done to see if the 
 				specified savelocation is a file, return is true or false when savelocation is not a file.
 				
+				
+Need an insert query from a csv file? Try something like this.
+$MyCSVHelper->createQueryString($MyCSVHelper->csvToArray($csvLocation,true,$arrayMap, true),'aTable');
+the function accepts 2 argumants and creates a mysql inert query string.
+
+public function createQueryString($array, $table)
+Both arguments are mandatory:
+$array is an array in the format created by  the csvToArray function
+$table is the table data is to be inserted into.
+
+	this function takes an array of associative arrays and creates a mass insert query.
+	the keys of each associative array must be database table names and the values are values to be inserted.
+	
+	@param $array - array - array of associative arrays containing data to be inserted.
+	@param $table - String - name of the database table to insert data into. 
+	
+	@return $queryString - String- a query string created from the array
+
+
+
+				
 That's it, hope you find it usefull.

@@ -29,7 +29,7 @@ class CSVHelper
 			2) if a location is set, after attempting to create the file a check is done to see if the 
 				specified savelocation is a file, return is true or false when savelocation is not a file.
 	****************************/
-	public function arrayToCSV($array, $saveLocation, $delimiter = ",", $encloser = '"', $lineEnd = "\n", $useColumnNames = true)
+	public function arrayToCSV($array, $saveLocation, $useColumnNames = true, $delimiter = ",", $encloser = '"', $lineEnd = "\n")
 	{
 		$csvOut = '';
 		
@@ -73,7 +73,7 @@ class CSVHelper
 			  string(2) "id"
 			}
 	@param $useOnlyMappedColumns - bool:
-			if set to true column not in $arrayMap will not be in the output array 
+			if set to true columns not in $arrayMap will not be in the output array 
 			default-false
 	@return $arrayData[][] - array
 	****************************/
@@ -90,11 +90,8 @@ class CSVHelper
 			while (($data = fgetcsv($handle)) !== false)
 			{
 				//get the first line for column name data
-				if($row==0)
-				{
-					if($useColumnNames == true)
+				if($row==0 && $useColumnNames === true)
 						$colNames = $data;
-				}
 				else
 					$arrayData[] = $data;
 			
@@ -124,16 +121,38 @@ class CSVHelper
 		
 					$arrayData[$k][$newKey] = $arrayData[$k][$i];
 					
-					if($useColumnNames == true && $newKey != $i)
+					if($useColumnNames == true)
 						unset($arrayData[$k][$i]);
 						
-					if($useOnlyMappedColumns && !$inMap)
+					if(count($arrayMap) && $useOnlyMappedColumns && !$inMap)
 						unset($arrayData[$k][$newKey]);
 				}
 			}
 			
 		return $arrayData;
 	} 
+	
+	/*******************************************
+	this function takes an array of associative arrays and creates a mass insert query.
+	the keys of each associative array must be database table names and the values are values to be inserted.
+	
+	@param $array - array - array of associative arrays containing data to be inserted.
+	@param $table - String - name of the database table to insert data into. 
+	
+	@return $queryString - String- a query string created from the array
+	********************************************/
+	public function createQueryString($array, $table)
+	{
+		$queryString = 	"INSERT INTO `".$table."` (`".implode("`, `",array_keys($array[0]))."`) VALUES";
+		foreach($array as $column)
+		{
+			$queryString .= "('".implode("', '",$column)."'),";	
+		}
+		$queryString = substr($queryString,0,strlen($queryString)-1);
+		
+		return $queryString;
+	}
+	
 
 }
 ?>
