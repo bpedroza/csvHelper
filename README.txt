@@ -64,7 +64,7 @@ Paramaters are as follows:
 				
 Need an insert query from a csv file? Try something like this.
 $MyCSVHelper->createQueryString($MyCSVHelper->csvToArray($csvLocation,true,$arrayMap, true),'aTable');
-the function accepts 2 argumants and creates a mysql inert query string.
+the function accepts 2 argumants and creates a mysql insert query string.
 
 public function createQueryString($array, $table)
 Both arguments are mandatory:
@@ -72,7 +72,7 @@ $array is an array in the format created by  the csvToArray function
 $table is the table data is to be inserted into.
 
 	this function takes an array of associative arrays and creates a mass insert query.
-	the keys of each associative array must be database table names and the values are values to be inserted.
+	the keys of each associative array must be database table column names and the values are values to be inserted.
 	
 	@param $array - array - array of associative arrays containing data to be inserted.
 	@param $table - String - name of the database table to insert data into. 
