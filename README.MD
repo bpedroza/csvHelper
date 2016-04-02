@@ -35,6 +35,6 @@ $MyCSVHelper->createQueryString($MyCSVHelper->csvToArray($csvLocation,true,$arra
 
 
 ## A Note:
-Using this at work i've noticed that the server i was working with times out after processing about 40,000 lines using the csvToArray function. If you have a very large csv file you might want to consider spliting it into multiple files before using this tool. There are some good csv splitting desktop applications availible for use. I might try to create a splitting function for this utility, until then use an open source desktop application for csv files containing more than 40,000 lines.
+I've noticed that the servers i work on tend to time out after processing about 40,000 lines using the csvToArray function. If you have a very large csv file you might want to consider spliting it into multiple files before using this tool. There are some good csv splitting desktop applications availible for use. I might try to create a splitting function for this utility, until then use an open source desktop application for csv files containing more than 40,000 lines.
 				
 That's it, hope you find it usefull.
